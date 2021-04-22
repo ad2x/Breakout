@@ -52,14 +52,29 @@ color White = #FFFFFF;
 PFont titleFont;
 PFont menuFont;
 
+//==== Bubble Variables ====
+Bubble[] bubbles;
+int n;
+
 void setup() {
   size(800, 800, FX2D);
+  
+  //==== Bubbles ====
+  n = 100;
+  
+  bubbles = new Bubble[n];
+  
+  int i = 0;
+  while (i < n) {
+    bubbles[i] = new Bubble();
+    i++;
+  }
   
   //==== Gif Stuff ====
   numberOfFrames = 90;
   gif = new PImage[numberOfFrames];
   
-  int i = 0;
+  i = 0;
   while ( i < numberOfFrames) {
     gif[i] = loadImage("frame_" + i + "_delay-0.03s.gif");
     i++;
@@ -75,6 +90,7 @@ void setup() {
 }
 
 void draw() {
+  println(frameRate);
   //==== Mode Framework ====
   switch(mode) {
     case 0:
