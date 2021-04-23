@@ -9,6 +9,9 @@ void mouseReleased() {
 
   //Title screen prompt
   anykey(_title, _menu);
+  
+  //Pause exit button
+  game_paused_button_click(30, 30);
 }
 
 void mousePressed() {

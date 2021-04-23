@@ -35,7 +35,7 @@ void title_text(float x, float y, float s) {
 
 //==== Press Any Key ====
 void anykey(int c_mode, int t_mode) {
-  if (mode == c_mode) {
+  if (mode == c_mode && keyCode != ESC) {
     pmode.append(mode);
     
     mode = t_mode;

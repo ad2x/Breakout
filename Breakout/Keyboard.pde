@@ -38,7 +38,7 @@ void menu_esc () {
 
 //==== Pausing Esc ====
 void pause_esc() {
-  if (keyCode == ESC && game_mode == _playing) {
+  if (keyCode == ESC && game_mode == _playing && countdown != true) {
     key = 0;
     
     game_mode = _paused;
@@ -46,5 +46,7 @@ void pause_esc() {
     key = 0;
     
     game_mode = _playing;
+  } else if (keyCode == ESC && countdown == true && game_mode == _playing) {
+    key = 0;
   }
 }

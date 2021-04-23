@@ -30,13 +30,28 @@ final int _end = 3;
 
 //==== Game Variables ====
 //General
-int lives = 3;
+int lives;
 
 //Paddle
-float paddleX = width/2;
+float paddleX;
 
 boolean leftkey;
 boolean rightkey;
+
+//Ball
+float ballX;
+float ballY;
+
+float ballVX;
+float ballVY;
+
+//Bricks
+int[] brickX;
+int[] brickY;
+int brickN;
+int brickD;
+int tempx = 100;
+int tempy = 100;
 
 //==== Keyboard Variables ====
 //-- Esc --
@@ -70,6 +85,13 @@ Circle_Button[] cbuttons;
 //==== Moving Start Text ====
 float startSize = 25;
 float startSizeGrow = -1;
+
+//==== Pausing + Countdown ====
+boolean _pausedvar = true;
+
+boolean countdown = true;
+
+int timer;
 
 void setup() {
   size(800, 800, FX2D);
@@ -108,6 +130,35 @@ void setup() {
   
   //==== PMode ====
   pmode = new IntList();
+  
+  //==== Paddle + Ball ====
+  paddleX = width/2;
+  
+  ballX = width/2;
+  ballY = 3*height/4;
+  ballVY = 5;
+  
+  //==== Bricks ====
+  brickN = 28;
+  
+  brickX = new int[brickN];
+  brickY = new int[brickN];
+  
+  brickD = 35;
+  
+  i = 0;
+  while (i < brickN) {
+    brickX[i] = tempx;
+    brickY[i] = tempy;
+    
+    tempx = tempx + 100;
+    if (tempx == width) {
+      tempy = tempy + 100;
+      tempx = 100;
+    }
+    
+    i++;
+  }
 }
 
 void draw() {

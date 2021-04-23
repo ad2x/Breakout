@@ -52,14 +52,16 @@ class Bubble {
       }
       i++;
     }
-    i = 0;
-    while (i < 3) {
-      Circle_Button b = cbuttons[i];
-      if (dist(x, y, b.x, b.y) < d/2 + b.d/2) {
-        vx = -vx;
-        vy = -vy;
+    if (mode == _menu) {
+      i = 0;
+      while (i < 3) {
+        Circle_Button b = cbuttons[i];
+        if (dist(x, y, b.x, b.y) < d/2 + b.d/2) {
+          vx = -vx;
+          vy = -vy;
+        }
+      i++;
       }
-    i++;
     }
   }
 }
