@@ -29,6 +29,14 @@ final int _paused = 2;
 final int _end = 3;
 
 //==== Game Variables ====
+//General
+int lives = 3;
+
+//Paddle
+float paddleX = width/2;
+
+boolean leftkey;
+boolean rightkey;
 
 //==== Keyboard Variables ====
 //-- Esc --
@@ -54,29 +62,42 @@ PFont menuFont;
 
 //==== Bubble Variables ====
 Bubble[] bubbles;
-int n;
+int n_b;
+
+//==== Circle Button Variables ====
+Circle_Button[] cbuttons;
+
+//==== Moving Start Text ====
+float startSize = 25;
+float startSizeGrow = -1;
 
 void setup() {
   size(800, 800, FX2D);
-  
-  //==== Bubbles ====
-  n = 100;
-  
-  bubbles = new Bubble[n];
-  
-  int i = 0;
-  while (i < n) {
-    bubbles[i] = new Bubble();
-    i++;
-  }
   
   //==== Gif Stuff ====
   numberOfFrames = 90;
   gif = new PImage[numberOfFrames];
   
-  i = 0;
+  int i = 0;
   while ( i < numberOfFrames) {
     gif[i] = loadImage("frame_" + i + "_delay-0.03s.gif");
+    i++;
+  }
+  
+  //==== Circle Buttons ====
+  cbuttons = new Circle_Button[3];
+  cbuttons[0] = new Circle_Button(225, 250, 200, Grey, DGrey, Black, LGrey, _game, "Play");
+  cbuttons[1] = new Circle_Button(600, 300, 200, Grey, DGrey, Black, LGrey, _settings, "Settings");
+  cbuttons[2] = new Circle_Button(400, 550, 200, Grey, DGrey, Black, LGrey, _stats, "Stats");
+  
+  //==== Bubbles ====
+  n_b = 100;
+  
+  bubbles = new Bubble[n_b];
+  
+  i = 0;
+  while (i < n_b) {
+    bubbles[i] = new Bubble();
     i++;
   }
   
@@ -90,7 +111,6 @@ void setup() {
 }
 
 void draw() {
-  println(frameRate);
   //==== Mode Framework ====
   switch(mode) {
     case 0:

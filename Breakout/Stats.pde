@@ -1,3 +1,3 @@
 void stats() {
-  
+  background(LGrey);
 }
