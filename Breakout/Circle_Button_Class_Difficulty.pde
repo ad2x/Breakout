@@ -1,11 +1,11 @@
-class Circle_Button {
+class difficulty_button {
   float x, y, d;
   color s, hs, ps, f;
-  int tmode;
+  int di;
   String text;
   int ts;
   
-  Circle_Button(float _x, float _y, float _d, color _s, color _hs, color _ps, color _f, int _tmode, String _text, int _ts) {
+  difficulty_button(float _x, float _y, float _d, color _s, color _hs, color _ps, color _f, int di2, String _text, int _ts) {
     x = _x;
     y = _y;
     d = _d;
@@ -13,7 +13,7 @@ class Circle_Button {
     hs = _hs;
     ps = _ps;
     f = _f;
-    tmode = _tmode;
+    di = di2; //Why isn't _di a valid name???
     text = _text;
     ts = _ts;
   }
@@ -33,6 +33,10 @@ class Circle_Button {
       }  
     }
     
+    if (difficulty == di) {
+      stroke(ps);
+    }
+    
     circle(0, 0, d);
     
     fill(s);
@@ -45,10 +49,8 @@ class Circle_Button {
   }
   
   void click() {
-    if (dist(x, y, mouseX , mouseY) < d/2 && mode == _menu) {      
-      pmode.append(mode);
-      
-      mode = tmode;      
+    if (dist(x, y, mouseX , mouseY) < d/2 && mode == _settings) {      
+      difficulty = di;
     }    
   }
 }

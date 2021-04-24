@@ -11,7 +11,12 @@ void mouseReleased() {
   anykey(_title, _menu);
   
   //Pause exit button
-  game_paused_button_click(30, 30);
+  game_paused_button_click(40, 40);
+  
+  //Difficulty buttons
+  for(int i = 0; i < 3; i++) {
+    dbuttons[i].click();
+  }
 }
 
 void mousePressed() {

@@ -42,10 +42,16 @@ void pause_esc() {
     key = 0;
     
     game_mode = _paused;
+    
+    timePausedStart = second() + minute()*60;
   } else if (keyCode == ESC && game_mode == _paused) {
     key = 0;
     
     game_mode = _playing;
+    
+    timePausedEnd = second() + minute()*60;
+    
+    timePausedTotal = timePausedTotal + (timePausedEnd - timePausedStart);
   } else if (keyCode == ESC && countdown == true && game_mode == _playing) {
     key = 0;
   }

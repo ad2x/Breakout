@@ -20,7 +20,7 @@ void game() {
 //=============== Game Start =================
 
 void game_start() {
-  background(White);
+  background(DGrey);
   
   game_start_button(width/2, 3*height/4, 25);
 }
@@ -29,16 +29,16 @@ void game_start_button(float x, float y, float ts) {
   pushMatrix();
   translate(x, y);
   
-  fill(Black);
+  fill(White);
   textFont(menuFont);
   textSize(startSize);
   
   text("<Click anywhere to start>", 0, 0);
   
   //Change size 
-  startSize = startSize - 0.25 * startSizeGrow;
+  startSize = startSize - 0.125 * startSizeGrow;
   
-  if (startSize == ts + 20 || startSize == ts) {
+  if (startSize == ts + 5 || startSize == ts) {
     startSizeGrow = -startSizeGrow;
   }
   
@@ -49,11 +49,31 @@ void game_start_click() {
   if (game_mode == _start && mode == _game) {
     game_mode = _playing;
     
+    ballX = width/2;
+    ballY = 3*height/4;
+    ballVX = 0;
+    ballVY = 5;
+    
+    score = 0;
+    
     timer = second() + minute()*60;
+    
+    timeScoreStart = second() + minute()*60;
+
+    timeScoreEnd = timeScoreTotal = timePausedStart = timePausedEnd = timePausedTotal = timeCountDown = timeScoreMinutes = timeScoreSeconds = 0;
+    
+    countdown = true;
+    _pausedvar = true;
     
     lives = 3;
     
     paddleX = width/2;
+    
+    int i = 0;
+    while (i < brickN) {
+      alive[i] = true;
+      i++;
+    }
   }
 }
 
@@ -61,11 +81,11 @@ void game_start_click() {
 //================ Game Play =================
 
 void game_playing() {
-  background(Grey);
+  background(DGrey);
   
-  game_playing_paddle(paddleX, height, 150, DGrey, Grey);
+  game_playing_paddle(paddleX, height, 150, DDGrey, Grey);
   
-  game_playing_ball(ballX, ballY, 25, DGrey, Grey);
+  game_playing_ball(ballX, ballY, 25, DDGrey, Grey);
   
   game_playing_lives(width - 120, 30);
   
@@ -73,8 +93,10 @@ void game_playing() {
   
   game_playing_bricks();
   
+  game_playing_timer(180, 30);
+  
   if (countdown == true) {
-    countdowntimer(width/2, height/2, timer);
+    game_playing_countdowntimer(width/2, height/2, timer);
   }
 }
 
@@ -166,7 +188,7 @@ void game_playing_ball(float x, float y, float d, color s, color f) {
 
 //Timer when ball respawns
 //Code from my pong project
-void countdowntimer(float x, float y, int time) {
+void game_playing_countdowntimer(float x, float y, int time) {
   pushMatrix();
   translate(x, y);
   
@@ -184,6 +206,7 @@ void countdowntimer(float x, float y, int time) {
   if (secondsleft == 0) {
     countdown = false;
     _pausedvar = false;
+    timeCountDown++;
   }
   
   //Not really related to the timer itself but needs to only happen while the timer is called
@@ -210,10 +233,38 @@ void game_playing_lives(float x, float y) {
   popMatrix();
 }
 
-//End game @ 0 lives
+//Current time
+void game_playing_timer(float x, float y) {
+  pushMatrix();
+  translate(x, y);
+  
+  fill(Black, 80);
+  textFont(menuFont);
+  textSize(55);
+  
+  if (game_mode == _playing && countdown == false) {
+    timeScoreEnd = second() + minute()*60;
+    timeScoreTotal = timeScoreEnd - timeScoreStart;
+  }
+  
+  timeScoreSeconds = timeScoreTotal - timePausedTotal - (timeCountDown * 3) - timeScoreSecToMin*60;
+  timeScoreMinutes = 0;
+      
+  while (timeScoreSeconds >=60) {
+    timeScoreMinutes++;
+    timeScoreSeconds = timeScoreSeconds - 60;
+  }
+    
+  text("Time: " + timeScoreMinutes + "m "+ timeScoreSeconds + "s", 0, 0);
+  
+  popMatrix();
+}
+
+//End game
 void game_playing_end() {
-  if (lives == 0) {
+  if (lives < 0 || score == brickN) {
     game_mode = _end;
+    score = 0;
   }
 }
 
@@ -223,12 +274,28 @@ void game_playing_bricks() {
   
   int i = 0;
   while (i < brickN) {
-    circle(brickX[i], brickY[i], brickD);
-    if (dist(ballX, ballY, brickX[i], brickY[i]) < 12.5 + brickD/2) {
-      ballVX = (ballX - brickX[i])/3;
-      ballVY = (ballY - brickY[i])/3;
+    if (alive[i] == true) {
+      game_playing_bricks_show(i);
     }
     i++;
+  }
+}
+
+void game_playing_bricks_show(int i) {
+  colorMode(HSB);
+  
+  fill(brickH[i], 180, 180);
+  
+  noStroke();
+  circle(brickX[i], brickY[i], brickD);
+  
+  colorMode(RGB);
+  
+  if (dist(ballX, ballY, brickX[i], brickY[i]) < 12.5 + brickD/2) {
+    ballVX = (ballX - brickX[i])/(9/(difficulty + 1)));
+    ballVY = (ballY - brickY[i])/(9/(difficulty + 1)));
+    alive[i] = false;
+    score++;
   }
 }
 
@@ -244,7 +311,7 @@ void game_paused() {
   noStroke();
   rect(0, 0, width, height);
   
-  game_paused_button(30, 30);
+  game_paused_button(40, 40);
 }
 
 void game_paused_button(float x, float y) {
@@ -289,5 +356,52 @@ void game_paused_button_click(float x, float y) {
 //================= Game End =================
 
 void game_end() {
-  background(White);
+  background(DGrey);
+  
+  game_end_text_result(width/2, height/4);
+  
+  game_end_text_time(width/2, 2*height/3);
 }
+
+//Result text
+void game_end_text_result(float x, float y) {
+  pushMatrix();
+  translate(x, y);
+  
+  textFont(titleFont);
+  textSize(130);
+  
+  if (lives >= 0) {
+    fill(Green);
+    text("You Won!", 0, 0);
+  } else {
+    fill(Red);
+    text("You Lost", 0, 0);
+  }
+  
+  popMatrix();
+}
+
+//Amount of time taken
+void game_end_text_time(float x, float y) {
+  pushMatrix();
+  translate(x, y);
+  
+  textFont(menuFont);
+  textSize(60);
+  fill(White);
+  
+  timeScoreSeconds = timeScoreTotal - timePausedTotal - (timeCountDown * 3) - timeScoreSecToMin*60;
+  timeScoreMinutes = 0;
+      
+  while (timeScoreSeconds >=60) {
+    timeScoreMinutes++;
+    timeScoreSeconds = timeScoreSeconds - 60;
+  }
+  
+  text("Time: " + timeScoreMinutes + "m "+ timeScoreSeconds + "s", 0, 0);
+  
+  popMatrix();
+}
+
+//Play Again
