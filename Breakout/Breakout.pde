@@ -114,7 +114,7 @@ int n_b;
 Circle_Button[] cbuttons;
 
 //==== Moving Start Text ====
-float startSize = 25;
+float startSize = 55;
 float startSizeGrow = -1;
 
 //==== Pausing + Countdown ====
@@ -127,8 +127,20 @@ int timer;
 //==== Difficulty ====
 difficulty_button[] dbuttons;
 
+//==== Statistics ====
+int gamesplayed;
+int timeplayed;
+int timeHighscore;
+
 void setup() {
   size(800, 800, FX2D);
+  
+  //==== Stats + Difficulty ====
+  String[] stuff = loadStrings("stuff.txt");
+  difficulty = Integer.parseInt(stuff[0]);
+  gamesplayed = Integer.parseInt(stuff[1]);
+  timeplayed = Integer.parseInt(stuff[2]);
+  timeHighscore = Integer.parseInt(stuff[3]);
   
   //==== Gif Stuff ====
   numberOfFrames = 90;
@@ -221,7 +233,6 @@ void setup() {
 }
 
 void draw() {
-  println(difficulty);
   //==== Mode Framework ====
   switch(mode) {
     case 0:

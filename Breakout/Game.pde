@@ -22,7 +22,14 @@ void game() {
 void game_start() {
   background(DGrey);
   
-  game_start_button(width/2, 3*height/4, 25);
+  //Lines
+  game_start_line(-5, 650, 850, 300);
+  game_start_line(-5, 700, 850, 350);
+  
+  game_start_line(200, -5, 850, 650);
+  game_start_line(150, -5, 800, 650);
+  
+  game_start_button(width/2, height/2, 55);  
 }
 
 void game_start_button(float x, float y, float ts) {
@@ -36,7 +43,7 @@ void game_start_button(float x, float y, float ts) {
   text("<Click anywhere to start>", 0, 0);
   
   //Change size 
-  startSize = startSize - 0.125 * startSizeGrow;
+  startSize = startSize - 0.0625 * startSizeGrow;
   
   if (startSize == ts + 5 || startSize == ts) {
     startSizeGrow = -startSizeGrow;
@@ -77,6 +84,13 @@ void game_start_click() {
   }
 }
 
+void game_start_line(float x1, float y1, float x2, float y2) {
+  stroke(Grey);
+  strokeWeight(5);
+  
+  line(x1, y1, x2, y2);
+}
+
 //============================================
 //================ Game Play =================
 
@@ -113,8 +127,8 @@ void game_playing_paddle(float x, float y, float d, color s, color f) {
   popMatrix();
   
   //Movement
-  if (leftkey == true && paddleX > d/2 && game_mode != _paused && countdown == false) paddleX = paddleX - 5;
-  if (rightkey == true && paddleX < width - d/2 && game_mode != _paused && countdown == false) paddleX = paddleX + 5;
+  if (leftkey == true && paddleX > d/2 && game_mode != _paused && countdown == false) paddleX = paddleX - 7;
+  if (rightkey == true && paddleX < width - d/2 && game_mode != _paused && countdown == false) paddleX = paddleX + 7;
 }
 
 void game_playing_paddle_move() {
@@ -265,6 +279,24 @@ void game_playing_end() {
   if (lives < 0 || score == brickN) {
     game_mode = _end;
     score = 0;
+    
+    gamesplayed++;
+    
+    timeplayed = timeplayed + timeScoreSeconds;
+    
+    if ((timeScoreSeconds < timeHighscore|| timeHighscore == 0) && lives >= 0) {
+      timeHighscore = timeScoreSeconds;
+    }
+    
+    int[] stuffint = new int[4];
+    stuffint[0] = difficulty;
+    stuffint[1] = gamesplayed;
+    stuffint[2] = timeplayed;
+    stuffint[3] = timeHighscore;
+    
+    String[] stuffstring = str(stuffint);
+    
+    saveStrings("stuff.txt", stuffstring);
   }
 }
 
@@ -292,8 +324,8 @@ void game_playing_bricks_show(int i) {
   colorMode(RGB);
   
   if (dist(ballX, ballY, brickX[i], brickY[i]) < 12.5 + brickD/2) {
-    ballVX = (ballX - brickX[i])/(9/(difficulty + 1)));
-    ballVY = (ballY - brickY[i])/(9/(difficulty + 1)));
+    ballVX = ((ballX - brickX[i])/(9/(difficulty + 1)));
+    ballVY = ((ballY - brickY[i])/(9/(difficulty + 1)));
     alive[i] = false;
     score++;
   }

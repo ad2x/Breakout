@@ -51,6 +51,16 @@ class difficulty_button {
   void click() {
     if (dist(x, y, mouseX , mouseY) < d/2 && mode == _settings) {      
       difficulty = di;
+      
+      int[] stuffint = new int[4];
+      stuffint[0] = difficulty;
+      stuffint[1] = gamesplayed;
+      stuffint[2] = timeplayed;
+      stuffint[3] = timeHighscore;
+      
+      String[] stuffstring = str(stuffint);
+      
+      saveStrings("stuff.txt", stuffstring);
     }    
   }
 }

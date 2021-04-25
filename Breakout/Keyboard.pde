@@ -1,4 +1,9 @@
 void keyPressed() {
+  //Exit if on the title screeen
+  if (mode == _title && keyCode == ESC) {
+    exit();
+  }
+  
   //Title screen prompt
   anykey(_title, _menu);
   
