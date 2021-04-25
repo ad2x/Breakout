@@ -11,6 +11,15 @@ import java.util.Arrays;
 //1-4b
 //4-21-2021
 
+//Minim
+Minim minim;
+AudioPlayer bounce;
+AudioPlayer button;
+AudioPlayer endeffect;
+AudioPlayer theme;
+AudioPlayer readyeffect;
+AudioPlayer sscore;
+
 //==== Mode Framework ====
 int mode;
 
@@ -133,6 +142,23 @@ int timeplayed;
 int timeHighscore;
 
 void setup() {
+  //Minim
+  //Copied the sounds effects from my pong project
+  minim = new Minim(this);
+  bounce = minim.loadFile("bounce.mp3");
+  endeffect = minim.loadFile("end.mp3");
+  button = minim.loadFile("button.mp3");
+  theme = minim.loadFile("theme.mp3");
+  sscore = minim.loadFile("score.mp3");
+  
+  int volume = -35;
+  
+  theme.setGain(volume);
+  bounce.setGain(volume);
+  endeffect.setGain(volume);
+  button.setGain(volume);
+  sscore.setGain(volume);
+  
   size(800, 800, FX2D);
   
   //==== Stats + Difficulty ====
@@ -250,5 +276,20 @@ void draw() {
     case 4:
       stats();
       break;
+  }
+  
+  //Theme
+  theme();
+}
+
+//Toggle theme
+void theme() {
+  if (mode == _title) {
+    theme.play();
+    if (theme.position()>=theme.length()) {
+      theme.rewind();
+    }
+  } else {
+    theme.pause();
   }
 }

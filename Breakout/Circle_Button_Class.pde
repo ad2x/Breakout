@@ -48,7 +48,10 @@ class Circle_Button {
     if (dist(x, y, mouseX , mouseY) < d/2 && mode == _menu) {      
       pmode.append(mode);
       
-      mode = tmode;      
+      mode = tmode;    
+      
+      button.rewind();
+      button.play();
     }    
   }
 }

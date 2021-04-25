@@ -81,6 +81,9 @@ void game_start_click() {
       alive[i] = true;
       i++;
     }
+    
+    button.rewind();
+    button.play();
   }
 }
 
@@ -170,19 +173,27 @@ void game_playing_ball(float x, float y, float d, color s, color f) {
   if (ballX < d/2) {
     ballX = d/2;
     ballVX = -ballVX;
+    bounce.rewind();
+    bounce.play();
   } else if (ballX > width - d/2) {
     ballX = width - d/2;
     ballVX = -ballVX;
+    bounce.rewind();
+    bounce.play();
   }
   
   if (ballY < d/2) {
     ballY = d/2;
     ballVY = -ballVY;
+    bounce.rewind();
+    bounce.play();
   }
   
   if (dist(ballX, ballY, paddleX, height) < d/2 + 75) {
     ballVX = (ballX - paddleX)/10;
     ballVY = (ballY - height)/10;
+    bounce.rewind();
+    bounce.play();
   }
   
   if (ballY - d/2 > height) {
@@ -197,6 +208,9 @@ void game_playing_ball(float x, float y, float d, color s, color f) {
     ballVX = 0;
     
     lives--;
+    
+    sscore.play();
+    sscore.rewind();
   }
 }
 
@@ -297,6 +311,10 @@ void game_playing_end() {
     String[] stuffstring = str(stuffint);
     
     saveStrings("stuff.txt", stuffstring);
+    
+    
+    endeffect.rewind();
+    endeffect.play();
   }
 }
 
@@ -328,6 +346,8 @@ void game_playing_bricks_show(int i) {
     ballVY = ((ballY - brickY[i])/(9/(difficulty + 1)));
     alive[i] = false;
     score++;
+    bounce.rewind();
+    bounce.play();
   }
 }
 

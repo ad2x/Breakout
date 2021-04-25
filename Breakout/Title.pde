@@ -39,5 +39,8 @@ void anykey(int c_mode, int t_mode) {
     pmode.append(mode);
     
     mode = t_mode;
+    
+    button.rewind();
+    button.play();
   }
 }

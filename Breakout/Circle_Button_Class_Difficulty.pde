@@ -52,6 +52,9 @@ class difficulty_button {
     if (dist(x, y, mouseX , mouseY) < d/2 && mode == _settings) {      
       difficulty = di;
       
+      button.rewind();
+      button.play();
+      
       int[] stuffint = new int[4];
       stuffint[0] = difficulty;
       stuffint[1] = gamesplayed;
