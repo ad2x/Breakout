@@ -56,14 +56,14 @@ float ballVX;
 float ballVY;
 
 //Bricks
-int[] brickX;
-int[] brickY;
+float[] brickX;
+float[] brickY;
 boolean[] alive;
 float[] brickH;
 int brickN;
 int brickD;
-int tempx = 100;
-int tempy = 100;
+float tempx = 100;
+float tempy = 100;
 
 //Score
 int score;
@@ -220,10 +220,10 @@ void setup() {
   ballVY = 5;
   
   //==== Bricks ====
-  brickN = 28;
+  brickN = 24;
   
-  brickX = new int[brickN];
-  brickY = new int[brickN];
+  brickX = new float[brickN];
+  brickY = new float[brickN];
   alive = new boolean[brickN];
   brickH = new float[brickN];
   
@@ -237,7 +237,7 @@ void setup() {
     
     alive[i] = true;
     
-    tempx = tempx + 100;
+    tempx = tempx + 116.666666667;
     if (tempx == width) {
       tempy = tempy + 100;
       tempx = 100;
@@ -262,6 +262,7 @@ void setup() {
 }
 
 void draw() {
+  println(mouseX ,mouseY);
   //==== Mode Framework ====
   switch(mode) {
     case 0:
